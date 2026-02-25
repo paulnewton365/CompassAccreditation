@@ -166,10 +166,10 @@ export function fmt(s) {
 export function loadUsers() {
   try { return JSON.parse(localStorage.getItem(USERS_KEY)||'[]') } catch { return [] }
 }
-export function saveUser(name, email, password) {
+export function saveUser(name, email) {
   const users = loadUsers()
   const idx = users.findIndex(u => u.email.toLowerCase()===email.toLowerCase())
-  const rec = { name, email: email.toLowerCase(), password, createdAt: new Date().toISOString() }
+  const rec = { name, email: email.toLowerCase(), createdAt: new Date().toISOString() }
   if (idx>=0) users[idx]=rec; else users.push(rec)
   try { localStorage.setItem(USERS_KEY, JSON.stringify(users)) } catch {}
 }

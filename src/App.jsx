@@ -63,21 +63,20 @@ function Ring({ pct, passed }) {
 
 /* ── COVER ──────────────────────────────────────────────────────────── */
 function Cover({ onStart, onAdmin }) {
-  const [form, setForm] = useState({ name:'', email:'', password:'' })
+  const [form, setForm] = useState({ name:'', email:'' })
   const [err, setErr] = useState('')
 
   const f = k => e => setForm(p => ({ ...p, [k]: e.target.value }))
-  const ready = form.name.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email) && form.password.length >= 6
+  const ready = form.name.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)
 
   const go = () => {
     if (!form.name.trim()) { setErr('Please enter your full name.'); return }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) { setErr('Please enter a valid email.'); return }
-    if (form.password.length < 6) { setErr('Password must be at least 6 characters.'); return }
     if (attemptsToday(form.email) >= MAX_DAILY_ATTEMPTS) {
       setErr(`You've reached the limit of ${MAX_DAILY_ATTEMPTS} attempts for today. Please try again tomorrow.`)
       return
     }
-    saveUser(form.name.trim(), form.email.trim(), form.password)
+    saveUser(form.name.trim(), form.email.trim())
     setErr('')
     onStart(form.name.trim(), form.email.trim())
   }
@@ -138,12 +137,8 @@ function Cover({ onStart, onAdmin }) {
             <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12, marginBottom:16 }}>
               <div>
                 <label className="fl">Work email</label>
-                <input className="fi" type="email" placeholder="you@antenna.com" value={form.email} onChange={f('email')}/>
-              </div>
-              <div>
-                <label className="fl">Password</label>
-                <input className="fi" type="password" placeholder="Min. 6 characters" value={form.password}
-                  onChange={f('password')} onKeyDown={e => e.key==='Enter' && ready && go()}/>
+                <input className="fi" type="email" placeholder="you@antenna.com" value={form.email} onChange={f('email')}
+                  onKeyDown={e => e.key==='Enter' && ready && go()}/>
               </div>
             </div>
 
@@ -505,7 +500,7 @@ function Admin({ onBack }) {
               <table className="admin-table">
                 <thead>
                   <tr>
-                    {['#','Name','Email','Password','Registered'].map(h => (
+                    {['#','Name','Email','Registered'].map(h => (
                       <th key={h}>{h}</th>
                     ))}
                   </tr>
@@ -516,9 +511,6 @@ function Admin({ onBack }) {
                       <td style={{ color:'#999', fontSize:11 }}>{i+1}</td>
                       <td style={{ color:'#1A1A1A', fontWeight:600 }}>{u.name}</td>
                       <td style={{ color:'#666', fontSize:12 }}>{u.email}</td>
-                      <td>
-                        <code style={{ fontSize:11, background:'#F0EEEA', padding:'2px 7px', color:'#333', letterSpacing:'0.05em', border:'1px solid #D9D6D0' }}>{u.password}</code>
-                      </td>
                       <td style={{ fontSize:11, color:'#999', whiteSpace:'nowrap' }}>
                         {new Date(u.createdAt).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})}
                         <div style={{ fontSize:10, marginTop:1, color:'#bbb' }}>
