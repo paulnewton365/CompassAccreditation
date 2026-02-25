@@ -368,8 +368,16 @@ function Admin({ onBack }) {
   const [err, setErr] = useState('')
   const [authed, setAuthed] = useState(false)
   const [activeTab, setActiveTab] = useState('results')
-  const scores = loadScores()
-  const users  = loadUsers()
+  const [scores, setScores] = useState(loadScores)
+  const [confirmDelete, setConfirmDelete] = useState(null)
+  const users = loadUsers()
+
+  const deleteScore = (idx) => {
+    const updated = scores.filter((_, i) => i !== idx)
+    try { localStorage.setItem('cc_scores_v4', JSON.stringify(updated)) } catch {}
+    setScores(updated)
+    setConfirmDelete(null)
+  }
 
   const tryAuth = () => {
     if (pw === ADMIN_PASS) { setAuthed(true) }
@@ -464,7 +472,7 @@ function Admin({ onBack }) {
               <table className="admin-table">
                 <thead>
                   <tr>
-                    {['#','Name','Email','Score','Result','Correct','Time','Date'].map(h => (
+                    {['#','Name','Email','Score','Result','Correct','Time','Date',''].map(h => (
                       <th key={h}>{h}</th>
                     ))}
                   </tr>
@@ -484,6 +492,22 @@ function Admin({ onBack }) {
                         <div style={{ fontSize:10, marginTop:1, color:'#bbb' }}>
                           {new Date(s.date).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}
                         </div>
+                      </td>
+                      <td style={{ textAlign:'right', paddingRight:16 }}>
+                        {confirmDelete === i ? (
+                          <div style={{ display:'flex', gap:6, justifyContent:'flex-end', alignItems:'center' }}>
+                            <span style={{ fontSize:11, color:'#666', whiteSpace:'nowrap' }}>Sure?</span>
+                            <button onClick={() => deleteScore(i)} style={{ fontSize:11, fontWeight:700, padding:'4px 10px', background:'#DC2626', color:'white', border:'none', cursor:'pointer', fontFamily:'Inter,sans-serif' }}>Yes</button>
+                            <button onClick={() => setConfirmDelete(null)} style={{ fontSize:11, fontWeight:600, padding:'4px 10px', background:'#F0EEEA', color:'#666', border:'1px solid #D9D6D0', cursor:'pointer', fontFamily:'Inter,sans-serif' }}>No</button>
+                          </div>
+                        ) : (
+                          <button onClick={() => setConfirmDelete(i)} title="Delete result"
+                            style={{ background:'none', border:'none', cursor:'pointer', color:'#CCC', padding:'4px 6px', lineHeight:1, fontSize:15, fontFamily:'Inter,sans-serif' }}
+                            onMouseEnter={e => e.target.style.color='#DC2626'}
+                            onMouseLeave={e => e.target.style.color='#CCC'}>
+                            ✕
+                          </button>
+                        )}
                       </td>
                     </tr>
                   ))}
