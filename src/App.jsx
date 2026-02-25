@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react'
 import {
   PASS_SCORE, TEST_LENGTH, ADMIN_PASS,
   DOMAINS, buildTest, getStudyRecs, fmt,
-  ALL_QUESTIONS, loadUsers, saveUser, loadScores, saveResult
+  ALL_QUESTIONS, loadUsers, saveUser, loadScores, saveResult,
+  MAX_DAILY_ATTEMPTS, attemptsToday
 } from './questions'
 
 /* ── Compass SVG icon ───────────────────────────────────────────────── */
@@ -72,6 +73,10 @@ function Cover({ onStart, onAdmin }) {
     if (!form.name.trim()) { setErr('Please enter your full name.'); return }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) { setErr('Please enter a valid email.'); return }
     if (form.password.length < 6) { setErr('Password must be at least 6 characters.'); return }
+    if (attemptsToday(form.email) >= MAX_DAILY_ATTEMPTS) {
+      setErr(`You've reached the limit of ${MAX_DAILY_ATTEMPTS} attempts for today. Please try again tomorrow.`)
+      return
+    }
     saveUser(form.name.trim(), form.email.trim(), form.password)
     setErr('')
     onStart(form.name.trim(), form.email.trim())

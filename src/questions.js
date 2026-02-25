@@ -182,3 +182,13 @@ export function saveResult(rec) {
   try { localStorage.setItem(SCORES_KEY, JSON.stringify(updated)) } catch {}
   return updated
 }
+
+export const MAX_DAILY_ATTEMPTS = 2
+
+export function attemptsToday(email) {
+  const today = new Date().toDateString()
+  return loadScores().filter(s =>
+    s.email.toLowerCase() === email.toLowerCase() &&
+    new Date(s.date).toDateString() === today
+  ).length
+}
