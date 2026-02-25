@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --cy:     #D9F52B;
+  --cy-bg:  rgba(217,245,43,0.08);
+  --cy-bdr: rgba(217,245,43,0.22);
+  --dark:   #0F1117;
+  --panel:  #161B26;
+  --panel2: #1C2333;
+  --bdr:    #252D3D;
+  --mid:    #6B7280;
+  --muted:  #9CA3AF;
+  --off:    #F0EFE8;
+  --green:  #3D8A65;
+  --red:    #DC2626;
+  --amber:  #F59E0B;
+  --black:  #0A0A0A;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body, #root {
+  min-height: 100vh;
+  background: var(--dark);
+  color: var(--off);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── SHARED UTILITIES ──────────────────────────────────────────────────── */
+.eyebrow {
+  font-size: 10px; font-weight: 700; letter-spacing: 4px;
+  color: var(--cy); text-transform: uppercase;
+}
+
+.tag {
+  font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 20px;
+  background: var(--cy-bg); color: var(--cy); border: 1px solid var(--cy-bdr);
+  letter-spacing: 0.3px; text-transform: uppercase; display: inline-block;
+}
+
+.fl {
+  display: block; font-size: 10px; font-weight: 600;
+  letter-spacing: 1.5px; color: var(--mid); text-transform: uppercase; margin-bottom: 7px;
+}
+
+.fi {
+  width: 100%; background: var(--panel2); border: 1px solid var(--bdr);
+  border-radius: 8px; padding: 11px 14px; font-size: 14px;
+  color: var(--off); font-family: 'Inter', sans-serif;
+  outline: none; transition: border-color 0.15s;
+}
+.fi:focus { border-color: rgba(217,245,43,0.45); }
+.fi::placeholder { color: var(--mid); }
+
+.err {
+  background: rgba(220,38,38,0.1); border: 1px solid rgba(220,38,38,0.3);
+  border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #F87171;
+}
+
+/* ── BUTTONS ────────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 8px; padding: 12px 22px; border-radius: 8px; font-size: 14px;
+  font-weight: 600; font-family: 'Inter', sans-serif; cursor: pointer;
+  border: none; transition: all 0.15s; letter-spacing: -0.2px;
+  text-decoration: none;
+}
+.btn-cy  { background: var(--cy); color: var(--black); }
+.btn-cy:hover:not(:disabled) { background: #c8e920; transform: translateY(-1px); }
+.btn-cy:disabled { opacity: 0.35; cursor: not-allowed; }
+.btn-ghost { background: transparent; color: var(--cy); border: 1px solid var(--cy-bdr); }
+.btn-ghost:hover { background: var(--cy-bg); }
+.btn-sm { padding: 8px 16px; font-size: 12px; }
+
+/* ── CARDS / PANELS ─────────────────────────────────────────────────────── */
+.card {
+  background: var(--panel); border: 1px solid var(--bdr); border-radius: 12px;
+}
+
+.card-hdr {
+  padding: 13px 18px; border-bottom: 1px solid var(--bdr);
+  font-size: 10px; font-weight: 700; letter-spacing: 2px;
+  color: var(--mid); text-transform: uppercase;
+  display: flex; justify-content: space-between; align-items: center;
+}
+
+/* ── BADGE ──────────────────────────────────────────────────────────────── */
+.badge {
+  font-size: 9px; font-weight: 700; padding: 2px 8px;
+  border-radius: 20px; text-align: center; letter-spacing: 0.5px;
+  text-transform: uppercase; display: inline-block;
+}
+.badge-pass { background: rgba(61,138,101,0.2); color: #5BAF87; border: 1px solid rgba(61,138,101,0.3); }
+.badge-fail { background: rgba(220,38,38,0.1);  color: #F87171; border: 1px solid rgba(220,38,38,0.25); }
+
+/* ── TIMER ─────────────────────────────────────────────────────────────────── */
+.timer {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--mid);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.timer.am { color: var(--amber); }
+.timer.rd { color: var(--red); }
