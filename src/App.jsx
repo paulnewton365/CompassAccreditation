@@ -3,7 +3,7 @@ import {
   PASS_SCORE, TEST_LENGTH, ADMIN_PASS,
   DOMAINS, buildTest, getStudyRecs, fmt,
   ALL_QUESTIONS, loadUsers, saveUser, loadScores, saveResult,
-  MAX_DAILY_ATTEMPTS, attemptsToday
+  MAX_DAILY_ATTEMPTS, attemptsToday, ALLOWED_EMAILS
 } from './questions'
 
 /* ── Compass SVG icon ───────────────────────────────────────────────── */
@@ -72,6 +72,10 @@ function Cover({ onStart, onAdmin }) {
   const go = () => {
     if (!form.name.trim()) { setErr('Please enter your full name.'); return }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) { setErr('Please enter a valid email.'); return }
+    if (!ALLOWED_EMAILS.includes(form.email.trim().toLowerCase())) {
+      setErr('This email address is not authorised for beta access. Please contact your Antenna administrator.')
+      return
+    }
     if (attemptsToday(form.email) >= MAX_DAILY_ATTEMPTS) {
       setErr(`You've reached the limit of ${MAX_DAILY_ATTEMPTS} attempts for today. Please try again tomorrow.`)
       return

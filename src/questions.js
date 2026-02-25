@@ -185,6 +185,24 @@ export function saveResult(rec) {
 
 export const MAX_DAILY_ATTEMPTS = 2
 
+export const ALLOWED_EMAILS = [
+  'keith.zakheim@antennagroup.com',
+  'paul.newton@antennagroup.com',
+  'christa.segalini@antennagroup.com',
+  'kimberly.setliff@antennagroup.com',
+  'tom.biegel@antennagroup.com',
+  'kristin.fordglencross@antennagroup.com',
+  'kristin.oconnell@antennagroup.com',
+  'jake.rozmaryn@antennagroup.com',
+  'chad.krulicki@antennagroup.com',
+  'arrabelle.stavroff@antennagroup.com',
+  'jorge.mendez@antennagroup.com',
+  'hannah.deaton@antennagroup.com',
+  'kirk.dammeier@antennagroup.com',
+  'bobbie.maciuch@antennagroup.com',
+  'heather.corrie@antennagroup.com',
+]
+
 export function attemptsToday(email) {
   const today = new Date().toDateString()
   return loadScores().filter(s =>
