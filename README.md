@@ -86,12 +86,12 @@ All core settings live in `src/questions.js`:
 | Domain | Questions | Min per test |
 |---|---|---|
 | What is a Conscious Brand | 19 | 3 |
-| Identifying Conscious Brands | 24 | 4 |
+| Identifying Conscious Brands | 24 | 3 |
 | Using the Tool | 14 | 2 |
 | How Scores Are Calculated | 15 | 2 |
-| Interpreting Scores & Maturity | 13 | 2 |
-| The Assessor's Role | 17 | 4 |
-| Actioning Insights | 13 | 2 |
+| Interpreting Scores & Maturity | 13 | 3 |
+| The Assessor's Role | 17 | 3 |
+| Actioning Insights | 13 | 3 |
 
 ---
 

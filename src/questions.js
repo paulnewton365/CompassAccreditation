@@ -173,7 +173,7 @@ export function shuffle(a) {
 export function buildTest() {
   const byD = {}
   Object.keys(DOMAINS).forEach(d => { byD[d] = shuffle(ALL_QUESTIONS.filter(q => q.domain === d)) })
-  const min = { ASSESSOR:4, IDENTIFY:4, CONSCIOUS:3, TOOL:2, SCORING:2, MATURITY:2, ACTION:2 }
+  const min = { ASSESSOR:3, IDENTIFY:3, CONSCIOUS:3, TOOL:2, SCORING:2, MATURITY:3, ACTION:3 }
   let sel = []
   Object.entries(min).forEach(([d, n]) => sel.push(...(byD[d]||[]).slice(0, n)))
   const rest = shuffle(Object.entries(min).flatMap(([d, n]) => (byD[d]||[]).slice(n)))
