@@ -247,99 +247,76 @@ function generatePDF(entry, DOMAINS, PASS_SCORE, fmt) {
     const opts = qd.options.map((opt, i) => {
       const isYours   = i === a.selectedIdx
       const isCorrect = i === qd.answer
-      const bg    = isCorrect ? '#d1fae5' : isYours ? '#fee2e2' : '#f9fafb'
+      const bg     = isCorrect ? '#d1fae5' : isYours ? '#fee2e2' : '#f9fafb'
       const border = isCorrect ? '#059669' : isYours ? '#dc2626' : '#e5e7eb'
-      const label = isCorrect ? '<span style="font-size:9px;font-weight:700;color:#059669;margin-left:auto;padding:2px 8px;background:rgba(5,150,105,0.12);">CORRECT</span>'
-                  : isYours   ? '<span style="font-size:9px;font-weight:700;color:#dc2626;margin-left:auto;padding:2px 8px;background:rgba(220,38,38,0.1);">YOUR ANSWER</span>'
-                  : ''
-      return \`<div style="display:flex;align-items:flex-start;gap:10px;padding:8px 12px;background:\${bg};border:1px solid \${border};margin-bottom:4px;font-size:12px;line-height:1.5;">
-        <span style="flex-shrink:0;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;background:\${isCorrect?'#059669':isYours?'#dc2626':'#e5e7eb'};color:\${isCorrect||isYours?'white':'#6b7280'};margin-top:1px;">\${keys[i]}</span>
-        <span style="flex:1">\${opt}</span>
-        \${label}
-      </div>\`
+      const keyBg  = isCorrect ? '#059669' : isYours ? '#dc2626' : '#e5e7eb'
+      const keyCol = (isCorrect || isYours) ? 'white' : '#6b7280'
+      const lbl    = isCorrect
+        ? '<span style="font-size:9px;font-weight:700;color:#059669;margin-left:auto;padding:2px 8px;background:rgba(5,150,105,0.12);">CORRECT</span>'
+        : isYours
+        ? '<span style="font-size:9px;font-weight:700;color:#dc2626;margin-left:auto;padding:2px 8px;background:rgba(220,38,38,0.1);">YOUR ANSWER</span>'
+        : ''
+      return (
+        '<div style="display:flex;align-items:flex-start;gap:10px;padding:8px 12px;background:' + bg + ';border:1px solid ' + border + ';margin-bottom:4px;font-size:12px;line-height:1.5;">' +
+        '<span style="flex-shrink:0;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;background:' + keyBg + ';color:' + keyCol + ';margin-top:1px;">' + keys[i] + '</span>' +
+        '<span style="flex:1">' + opt + '</span>' +
+        lbl +
+        '</div>'
+      )
     }).join('')
-    return \`<div style="margin-bottom:16px;border:1px solid #e5e7eb;overflow:hidden;">
-      <div style="padding:12px 16px;background:#f3f4f6;border-bottom:1px solid #e5e7eb;">
-        <div style="font-size:9px;font-weight:700;color:#e53935;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:5px;">\${DOMAINS[a.domain]}</div>
-        <div style="font-size:13px;font-weight:600;color:#1a1a1a;line-height:1.5;">\${qd.q}</div>
-      </div>
-      <div style="padding:12px 16px;">\${opts}</div>
-    </div>\`
+    return (
+      '<div style="margin-bottom:16px;border:1px solid #e5e7eb;overflow:hidden;">' +
+      '<div style="padding:12px 16px;background:#f3f4f6;border-bottom:1px solid #e5e7eb;">' +
+      '<div style="font-size:9px;font-weight:700;color:#e53935;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:5px;">' + DOMAINS[a.domain] + '</div>' +
+      '<div style="font-size:13px;font-weight:600;color:#1a1a1a;line-height:1.5;">' + qd.q + '</div>' +
+      '</div>' +
+      '<div style="padding:12px 16px;">' + opts + '</div>' +
+      '</div>'
+    )
   }).join('')
 
   const domainRows = domainStats.map(d => {
     const col = d.pct >= 80 ? '#059669' : d.pct >= 60 ? '#f59e0b' : '#dc2626'
-    return \`<div style="display:flex;align-items:center;gap:14px;padding:9px 0;border-bottom:1px solid #f3f4f6;">
-      <span style="font-size:12px;color:#374151;min-width:200px;font-weight:500;">\${d.label}</span>
-      <div style="flex:1;height:5px;background:#f3f4f6;border:1px solid #e5e7eb;overflow:hidden;">
-        <div style="height:100%;width:\${d.pct}%;background:\${col};"></div>
-      </div>
-      <span style="font-size:12px;font-weight:700;min-width:35px;text-align:right;color:\${col};">\${d.pct}%</span>
-    </div>\`
+    return (
+      '<div style="display:flex;align-items:center;gap:14px;padding:9px 0;border-bottom:1px solid #f3f4f6;">' +
+      '<span style="font-size:12px;color:#374151;min-width:200px;font-weight:500;">' + d.label + '</span>' +
+      '<div style="flex:1;height:5px;background:#f3f4f6;border:1px solid #e5e7eb;overflow:hidden;">' +
+      '<div style="height:100%;width:' + d.pct + '%;background:' + col + ';"></div>' +
+      '</div>' +
+      '<span style="font-size:12px;font-weight:700;min-width:35px;text-align:right;color:' + col + ';">' + d.pct + '%</span>' +
+      '</div>'
+    )
   }).join('')
 
   const verdictColour = entry.passed ? '#059669' : '#dc2626'
+  const verdictIcon   = entry.passed ? '&#10003;' : '&#10007;'
   const verdictText   = entry.passed ? 'Accreditation Passed' : 'Not Yet Accredited'
   const dateStr = new Date(entry.date).toLocaleDateString('en-GB', { day:'2-digit', month:'long', year:'numeric' })
+  const incorrectSection = incorrect.length > 0
+    ? '<div style="margin-bottom:8px;"><div style="display:flex;align-items:center;gap:10px;font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#6b7280;margin-bottom:14px;">Questions answered incorrectly <span style="background:rgba(220,38,38,0.1);color:#dc2626;padding:2px 9px;">' + incorrect.length + '</span></div>' + incorrectHTML + '</div>'
+    : '<div style="padding:20px;text-align:center;color:#059669;font-weight:600;border:1px solid #d1fae5;background:rgba(5,150,105,0.05);">All questions answered correctly.</div>'
 
-  const html = \`<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Compass Accreditation — \${entry.name}</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-  * { box-sizing:border-box; margin:0; padding:0; }
-  body { font-family:'Inter',sans-serif; background:white; color:#1a1a1a; font-size:13px; line-height:1.6; padding:40px 48px; }
-  @media print {
-    body { padding:24px 36px; }
-    .no-print { display:none; }
-  }
-</style>
-</head>
-<body>
-  <!-- Header -->
-  <div style="display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:24px;border-bottom:2px solid #1a1a1a;margin-bottom:32px;">
-    <div>
-      <div style="font-size:9px;font-weight:700;letter-spacing:0.18em;color:#e53935;text-transform:uppercase;margin-bottom:6px;">Assessor Accreditation</div>
-      <div style="font-size:22px;font-weight:700;letter-spacing:-0.5px;color:#1a1a1a;">Conscious Compass</div>
-      <div style="font-size:11px;color:#6b7280;margin-top:2px;">Antenna Group</div>
-    </div>
-    <div style="text-align:right;">
-      <div style="font-size:11px;color:#6b7280;">\${dateStr}</div>
-      <div style="font-size:11px;font-weight:600;color:#1a1a1a;margin-top:2px;">\${entry.name}</div>
-      <div style="font-size:11px;color:#6b7280;">\${entry.email}</div>
-    </div>
-  </div>
-
-  <!-- Score hero -->
-  <div style="text-align:center;padding:32px 24px;background:#f9faf7;border:1px solid #e5e7eb;margin-bottom:24px;">
-    <div style="font-size:64px;font-weight:700;color:\${verdictColour};letter-spacing:-3px;line-height:1;">\${entry.score}<span style="font-size:28px;">%</span></div>
-    <div style="font-size:18px;font-weight:700;color:\${verdictColour};margin-top:8px;">\${entry.passed ? '✓' : '✗'} \${verdictText}</div>
-    <div style="font-size:12px;color:#6b7280;margin-top:6px;">\${entry.correct} correct out of \${entry.total} · \${fmt(entry.time)}</div>
-  </div>
-
-  <!-- Domain breakdown -->
-  <div style="margin-bottom:28px;">
-    <div style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#6b7280;margin-bottom:12px;">Score by domain</div>
-    \${domainRows}
-  </div>
-
-  \${incorrect.length > 0 ? \`
-  <!-- Incorrect questions -->
-  <div style="margin-bottom:8px;">
-    <div style="display:flex;align-items:center;gap:10px;font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#6b7280;margin-bottom:14px;">
-      Questions answered incorrectly
-      <span style="background:rgba(220,38,38,0.1);color:#dc2626;font-size:9px;font-weight:700;padding:2px 9px;">\${incorrect.length}</span>
-    </div>
-    \${incorrectHTML}
-  </div>\` : \`<div style="padding:20px;text-align:center;color:#059669;font-weight:600;border:1px solid #d1fae5;background:rgba(5,150,105,0.05);">All questions answered correctly.</div>\`}
-
-  <div class="no-print" style="margin-top:40px;text-align:center;">
-    <button onclick="window.print()" style="font-family:Inter,sans-serif;font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:12px 28px;background:#e8ff00;color:#1a1a1a;border:none;cursor:pointer;">Print / Save as PDF</button>
-  </div>
-</body>
-</html>\`
+  const html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Compass Accreditation</title>' +
+    '<style>@import url(\'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap\');' +
+    '*{box-sizing:border-box;margin:0;padding:0;}' +
+    'body{font-family:Inter,sans-serif;background:white;color:#1a1a1a;font-size:13px;line-height:1.6;padding:40px 48px;}' +
+    '@media print{body{padding:24px 36px;}.no-print{display:none;}}' +
+    '</style></head><body>' +
+    '<div style="display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:24px;border-bottom:2px solid #1a1a1a;margin-bottom:32px;">' +
+    '<div><div style="font-size:9px;font-weight:700;letter-spacing:0.18em;color:#e53935;text-transform:uppercase;margin-bottom:6px;">Assessor Accreditation</div>' +
+    '<div style="font-size:22px;font-weight:700;letter-spacing:-0.5px;">Conscious Compass</div>' +
+    '<div style="font-size:11px;color:#6b7280;margin-top:2px;">Antenna Group</div></div>' +
+    '<div style="text-align:right;"><div style="font-size:11px;color:#6b7280;">' + dateStr + '</div>' +
+    '<div style="font-size:11px;font-weight:600;margin-top:2px;">' + entry.name + '</div>' +
+    '<div style="font-size:11px;color:#6b7280;">' + entry.email + '</div></div></div>' +
+    '<div style="text-align:center;padding:32px 24px;background:#f9faf7;border:1px solid #e5e7eb;margin-bottom:24px;">' +
+    '<div style="font-size:64px;font-weight:700;color:' + verdictColour + ';letter-spacing:-3px;line-height:1;">' + entry.score + '<span style="font-size:28px;">%</span></div>' +
+    '<div style="font-size:18px;font-weight:700;color:' + verdictColour + ';margin-top:8px;">' + verdictIcon + ' ' + verdictText + '</div>' +
+    '<div style="font-size:12px;color:#6b7280;margin-top:6px;">' + entry.correct + ' correct out of ' + entry.total + ' &middot; ' + fmt(entry.time) + '</div></div>' +
+    '<div style="margin-bottom:28px;"><div style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#6b7280;margin-bottom:12px;">Score by domain</div>' + domainRows + '</div>' +
+    incorrectSection +
+    '<div class="no-print" style="margin-top:40px;text-align:center;"><button onclick="window.print()" style="font-family:Inter,sans-serif;font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:12px 28px;background:#e8ff00;color:#1a1a1a;border:none;cursor:pointer;">Print / Save as PDF</button></div>' +
+    '</body></html>'
 
   const win = window.open('', '_blank')
   win.document.write(html)
