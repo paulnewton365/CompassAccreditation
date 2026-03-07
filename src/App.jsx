@@ -160,7 +160,6 @@ function Quiz({ questions, onComplete }) {
 
   const q = questions[current]
   const progress = Math.round((current / questions.length) * 100)
-  const correctSoFar = answers.filter(a => a.correct).length
   const timerCls = elapsed > 1800 ? 'danger' : elapsed > 1350 ? 'warning' : ''
   const keys = ['A','B','C','D']
 
@@ -190,7 +189,6 @@ function Quiz({ questions, onComplete }) {
         <div className="prog-wrap">
           <div className="prog-meta">
             <span>Q{current+1} of {questions.length}</span>
-            <span>{correctSoFar} correct so far</span>
           </div>
           <div className="prog-track">
             <div className="prog-fill" style={{ width:`${progress}%` }}/>
