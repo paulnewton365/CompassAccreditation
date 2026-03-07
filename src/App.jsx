@@ -106,21 +106,6 @@ function Cover({ onStart, onAdmin }) {
           Complete this test and then be able to complete assessments for brands. Passmark 80%.
         </p>
 
-        {/* Stats */}
-        <div className="stat-strip" style={{ maxWidth:480, margin:'0 auto 32px' }}>
-          {[
-            { val: ALL_QUESTIONS.length, lbl:'Question bank' },
-            { val: TEST_LENGTH,          lbl:'Per test' },
-            { val: `${PASS_SCORE}%`,     lbl:'Pass mark' },
-            { val: 7,                    lbl:'Domains' },
-          ].map((s,i) => (
-            <div className="stat-cell" key={i}>
-              <div className="stat-val">{s.val}</div>
-              <div className="stat-lbl">{s.lbl}</div>
-            </div>
-          ))}
-        </div>
-
         {/* Form */}
         <div className="card" style={{ maxWidth:440, margin:'0 auto', textAlign:'left' }}>
           <div className="card-header">
