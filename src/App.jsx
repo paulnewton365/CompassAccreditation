@@ -6,6 +6,8 @@ import {
   MAX_DAILY_ATTEMPTS, attemptsToday, ALLOWED_EMAILS
 } from './questions'
 
+const APP_VERSION = 'v1.0.4'
+
 /* ── Compass SVG icon ───────────────────────────────────────────────── */
 function CompassIcon({ size = 22 }) {
   return (
@@ -110,6 +112,7 @@ function Cover({ onStart, onAdmin }) {
         <p style={{ fontSize:15, color:'#666666', lineHeight:1.8, fontWeight:400, marginBottom:36, maxWidth:460, margin:'0 auto 36px' }}>
           Complete this test and then be able to complete assessments for brands. Passmark 80%.
         </p>
+        <div style={{ fontSize:11, color:'#AAAAAA', letterSpacing:'0.08em', marginBottom:24 }}>{APP_VERSION}</div>
 
         {/* Form */}
         <div className="card" style={{ maxWidth:440, margin:'0 auto', textAlign:'left' }}>
