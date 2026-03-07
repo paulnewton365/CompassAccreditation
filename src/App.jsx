@@ -6,7 +6,7 @@ import {
   MAX_DAILY_ATTEMPTS, attemptsToday, ALLOWED_EMAILS, BADGE_B64
 } from './questions'
 
-const APP_VERSION = 'v1.0.7'
+const APP_VERSION = 'v1.0.8'
 
 /* ── Compass SVG icon ───────────────────────────────────────────────── */
 function CompassIcon({ size = 22 }) {
@@ -233,7 +233,7 @@ function Quiz({ questions, onComplete }) {
 
 
 /* ── PDF GENERATOR ─────────────────────────────────────────────────────── */
-function generatePDF(entry, DOMAINS, PASS_SCORE, fmt) {
+function generatePDF(entry, DOMAINS, PASS_SCORE, fmt, badgeB64) {
   const keys = ['A','B','C','D']
   const incorrect = entry.answers.filter(a => !a.correct)
   const domainStats = Object.entries(DOMAINS).map(([key, label]) => {
@@ -292,6 +292,14 @@ function generatePDF(entry, DOMAINS, PASS_SCORE, fmt) {
   const verdictIcon   = entry.passed ? '&#10003;' : '&#10007;'
   const verdictText   = entry.passed ? 'Accreditation Passed' : 'Not Yet Accredited'
   const dateStr = new Date(entry.date).toLocaleDateString('en-GB', { day:'2-digit', month:'long', year:'numeric' })
+  const badgeBlock = entry.passed
+    ? '<div style="background:#1a1a1a;padding:28px 32px;text-align:center;margin-bottom:24px;">' +
+      '<div style="font-size:9px;font-weight:700;letter-spacing:0.18em;color:#e8ff00;text-transform:uppercase;margin-bottom:10px;">Accreditation Achieved</div>' +
+      '<img src="' + badgeB64 + '" alt="Fully Conscious Badge" style="width:160px;height:160px;display:block;margin:0 auto 16px;"/>' +
+      '<div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.7;max-width:420px;margin:0 auto;">' +
+      'You are now a fully conscious assessor, cleared to evaluate brands across all eight dimensions of Brand Consciousness.' +
+      '</div></div>'
+    : ''
   const incorrectSection = incorrect.length > 0
     ? '<div style="margin-bottom:8px;"><div style="display:flex;align-items:center;gap:10px;font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#6b7280;margin-bottom:14px;">Questions answered incorrectly <span style="background:rgba(220,38,38,0.1);color:#dc2626;padding:2px 9px;">' + incorrect.length + '</span></div>' + incorrectHTML + '</div>'
     : '<div style="padding:20px;text-align:center;color:#059669;font-weight:600;border:1px solid #d1fae5;background:rgba(5,150,105,0.05);">All questions answered correctly.</div>'
@@ -313,6 +321,7 @@ function generatePDF(entry, DOMAINS, PASS_SCORE, fmt) {
     '<div style="font-size:64px;font-weight:700;color:' + verdictColour + ';letter-spacing:-3px;line-height:1;">' + entry.score + '<span style="font-size:28px;">%</span></div>' +
     '<div style="font-size:18px;font-weight:700;color:' + verdictColour + ';margin-top:8px;">' + verdictIcon + ' ' + verdictText + '</div>' +
     '<div style="font-size:12px;color:#6b7280;margin-top:6px;">' + entry.correct + ' correct out of ' + entry.total + ' &middot; ' + fmt(entry.time) + '</div></div>' +
+    badgeBlock +
     '<div style="margin-bottom:28px;"><div style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#6b7280;margin-bottom:12px;">Score by domain</div>' + domainRows + '</div>' +
     incorrectSection +
     '<div class="no-print" style="margin-top:40px;text-align:center;"><button onclick="window.print()" style="font-family:Inter,sans-serif;font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:12px 28px;background:#e8ff00;color:#1a1a1a;border:none;cursor:pointer;">Print / Save as PDF</button></div>' +
@@ -454,7 +463,7 @@ function Results({ entry, onRetake }) {
         </div>
 
         <div style={{ display:'flex', justifyContent:'center', gap:12, paddingTop:16, flexWrap:'wrap' }}>
-          <button className="btn btn-ghost" onClick={() => generatePDF(entry, DOMAINS, PASS_SCORE, fmt)}>
+          <button className="btn btn-ghost" onClick={() => generatePDF(entry, DOMAINS, PASS_SCORE, fmt, BADGE_B64)}>
             ↓ Download PDF
           </button>
           <button className="btn btn-outline" onClick={onRetake}>Retake Test</button>
@@ -485,7 +494,7 @@ function ResultDetail({ entry, onClose }) {
             <div style={{ fontSize:12, color:'#666' }}>{entry.email} · {new Date(entry.date).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})}</div>
           </div>
           <div style={{ display:'flex', gap:10, alignItems:'center' }}>
-            <button className="btn btn-ghost btn-sm" onClick={() => generatePDF(entry, DOMAINS, PASS_SCORE, fmt)}>↓ PDF</button>
+            <button className="btn btn-ghost btn-sm" onClick={() => generatePDF(entry, DOMAINS, PASS_SCORE, fmt, BADGE_B64)}>↓ PDF</button>
             <button className="btn btn-ghost btn-sm" onClick={onClose}>✕ Close</button>
           </div>
         </div>
