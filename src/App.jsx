@@ -6,7 +6,7 @@ import {
   MAX_DAILY_ATTEMPTS, attemptsToday, ALLOWED_EMAILS
 } from './questions'
 
-const APP_VERSION = 'v1.0.4'
+const APP_VERSION = 'v1.0.5'
 
 /* ── Compass SVG icon ───────────────────────────────────────────────── */
 function CompassIcon({ size = 22 }) {
@@ -231,6 +231,121 @@ function Quiz({ questions, onComplete }) {
   )
 }
 
+
+/* ── PDF GENERATOR ─────────────────────────────────────────────────────── */
+function generatePDF(entry, DOMAINS, PASS_SCORE, fmt) {
+  const keys = ['A','B','C','D']
+  const incorrect = entry.answers.filter(a => !a.correct)
+  const domainStats = Object.entries(DOMAINS).map(([key, label]) => {
+    const qs = entry.answers.filter(a => a.domain === key)
+    const c = qs.filter(a => a.correct).length
+    return { label, pct: qs.length ? Math.round((c/qs.length)*100) : null, total: qs.length }
+  }).filter(d => d.total > 0)
+
+  const incorrectHTML = incorrect.map(a => {
+    const qd = a.question
+    const opts = qd.options.map((opt, i) => {
+      const isYours   = i === a.selectedIdx
+      const isCorrect = i === qd.answer
+      const bg    = isCorrect ? '#d1fae5' : isYours ? '#fee2e2' : '#f9fafb'
+      const border = isCorrect ? '#059669' : isYours ? '#dc2626' : '#e5e7eb'
+      const label = isCorrect ? '<span style="font-size:9px;font-weight:700;color:#059669;margin-left:auto;padding:2px 8px;background:rgba(5,150,105,0.12);">CORRECT</span>'
+                  : isYours   ? '<span style="font-size:9px;font-weight:700;color:#dc2626;margin-left:auto;padding:2px 8px;background:rgba(220,38,38,0.1);">YOUR ANSWER</span>'
+                  : ''
+      return \`<div style="display:flex;align-items:flex-start;gap:10px;padding:8px 12px;background:\${bg};border:1px solid \${border};margin-bottom:4px;font-size:12px;line-height:1.5;">
+        <span style="flex-shrink:0;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;background:\${isCorrect?'#059669':isYours?'#dc2626':'#e5e7eb'};color:\${isCorrect||isYours?'white':'#6b7280'};margin-top:1px;">\${keys[i]}</span>
+        <span style="flex:1">\${opt}</span>
+        \${label}
+      </div>\`
+    }).join('')
+    return \`<div style="margin-bottom:16px;border:1px solid #e5e7eb;overflow:hidden;">
+      <div style="padding:12px 16px;background:#f3f4f6;border-bottom:1px solid #e5e7eb;">
+        <div style="font-size:9px;font-weight:700;color:#e53935;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:5px;">\${DOMAINS[a.domain]}</div>
+        <div style="font-size:13px;font-weight:600;color:#1a1a1a;line-height:1.5;">\${qd.q}</div>
+      </div>
+      <div style="padding:12px 16px;">\${opts}</div>
+    </div>\`
+  }).join('')
+
+  const domainRows = domainStats.map(d => {
+    const col = d.pct >= 80 ? '#059669' : d.pct >= 60 ? '#f59e0b' : '#dc2626'
+    return \`<div style="display:flex;align-items:center;gap:14px;padding:9px 0;border-bottom:1px solid #f3f4f6;">
+      <span style="font-size:12px;color:#374151;min-width:200px;font-weight:500;">\${d.label}</span>
+      <div style="flex:1;height:5px;background:#f3f4f6;border:1px solid #e5e7eb;overflow:hidden;">
+        <div style="height:100%;width:\${d.pct}%;background:\${col};"></div>
+      </div>
+      <span style="font-size:12px;font-weight:700;min-width:35px;text-align:right;color:\${col};">\${d.pct}%</span>
+    </div>\`
+  }).join('')
+
+  const verdictColour = entry.passed ? '#059669' : '#dc2626'
+  const verdictText   = entry.passed ? 'Accreditation Passed' : 'Not Yet Accredited'
+  const dateStr = new Date(entry.date).toLocaleDateString('en-GB', { day:'2-digit', month:'long', year:'numeric' })
+
+  const html = \`<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Compass Accreditation — \${entry.name}</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'Inter',sans-serif; background:white; color:#1a1a1a; font-size:13px; line-height:1.6; padding:40px 48px; }
+  @media print {
+    body { padding:24px 36px; }
+    .no-print { display:none; }
+  }
+</style>
+</head>
+<body>
+  <!-- Header -->
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:24px;border-bottom:2px solid #1a1a1a;margin-bottom:32px;">
+    <div>
+      <div style="font-size:9px;font-weight:700;letter-spacing:0.18em;color:#e53935;text-transform:uppercase;margin-bottom:6px;">Assessor Accreditation</div>
+      <div style="font-size:22px;font-weight:700;letter-spacing:-0.5px;color:#1a1a1a;">Conscious Compass</div>
+      <div style="font-size:11px;color:#6b7280;margin-top:2px;">Antenna Group</div>
+    </div>
+    <div style="text-align:right;">
+      <div style="font-size:11px;color:#6b7280;">\${dateStr}</div>
+      <div style="font-size:11px;font-weight:600;color:#1a1a1a;margin-top:2px;">\${entry.name}</div>
+      <div style="font-size:11px;color:#6b7280;">\${entry.email}</div>
+    </div>
+  </div>
+
+  <!-- Score hero -->
+  <div style="text-align:center;padding:32px 24px;background:#f9faf7;border:1px solid #e5e7eb;margin-bottom:24px;">
+    <div style="font-size:64px;font-weight:700;color:\${verdictColour};letter-spacing:-3px;line-height:1;">\${entry.score}<span style="font-size:28px;">%</span></div>
+    <div style="font-size:18px;font-weight:700;color:\${verdictColour};margin-top:8px;">\${entry.passed ? '✓' : '✗'} \${verdictText}</div>
+    <div style="font-size:12px;color:#6b7280;margin-top:6px;">\${entry.correct} correct out of \${entry.total} · \${fmt(entry.time)}</div>
+  </div>
+
+  <!-- Domain breakdown -->
+  <div style="margin-bottom:28px;">
+    <div style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#6b7280;margin-bottom:12px;">Score by domain</div>
+    \${domainRows}
+  </div>
+
+  \${incorrect.length > 0 ? \`
+  <!-- Incorrect questions -->
+  <div style="margin-bottom:8px;">
+    <div style="display:flex;align-items:center;gap:10px;font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#6b7280;margin-bottom:14px;">
+      Questions answered incorrectly
+      <span style="background:rgba(220,38,38,0.1);color:#dc2626;font-size:9px;font-weight:700;padding:2px 9px;">\${incorrect.length}</span>
+    </div>
+    \${incorrectHTML}
+  </div>\` : \`<div style="padding:20px;text-align:center;color:#059669;font-weight:600;border:1px solid #d1fae5;background:rgba(5,150,105,0.05);">All questions answered correctly.</div>\`}
+
+  <div class="no-print" style="margin-top:40px;text-align:center;">
+    <button onclick="window.print()" style="font-family:Inter,sans-serif;font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:12px 28px;background:#e8ff00;color:#1a1a1a;border:none;cursor:pointer;">Print / Save as PDF</button>
+  </div>
+</body>
+</html>\`
+
+  const win = window.open('', '_blank')
+  win.document.write(html)
+  win.document.close()
+}
+
 /* ── RESULTS ──────────────────────────────────────────────────────────── */
 function Results({ entry, onRetake }) {
   const recs = getStudyRecs(entry.answers)
@@ -345,8 +460,109 @@ function Results({ entry, onRetake }) {
           })}
         </div>
 
-        <div style={{ display:'flex', justifyContent:'center', paddingTop:16 }}>
+        <div style={{ display:'flex', justifyContent:'center', gap:12, paddingTop:16, flexWrap:'wrap' }}>
+          <button className="btn btn-ghost" onClick={() => generatePDF(entry, DOMAINS, PASS_SCORE, fmt)}>
+            ↓ Download PDF
+          </button>
           <button className="btn btn-outline" onClick={onRetake}>Retake Test</button>
+          <button className="btn btn-primary" onClick={() => window.close()}>Assessment Complete</button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ── RESULT DETAIL (admin overlay) ─────────────────────────────────────── */
+function ResultDetail({ entry, onClose }) {
+  const keys = ['A','B','C','D']
+  const incorrect = (entry.answers || []).filter(a => !a.correct)
+  const domainStats = Object.entries(DOMAINS).map(([key, label]) => {
+    const qs = (entry.answers || []).filter(a => a.domain === key)
+    const c = qs.filter(a => a.correct).length
+    return { key, label, pct: qs.length ? Math.round((c/qs.length)*100) : null, total: qs.length }
+  }).filter(d => d.total > 0)
+
+  return (
+    <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.5)', zIndex:100, overflowY:'auto', padding:'40px 24px' }}>
+      <div style={{ maxWidth:720, margin:'0 auto', background:'var(--light-gray)', border:'1px solid var(--sand)' }}>
+        {/* Detail header */}
+        <div style={{ background:'white', borderBottom:'1px solid var(--sand)', padding:'16px 24px', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+          <div>
+            <div style={{ fontWeight:700, fontSize:15, color:'#1A1A1A' }}>{entry.name}</div>
+            <div style={{ fontSize:12, color:'#666' }}>{entry.email} · {new Date(entry.date).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})}</div>
+          </div>
+          <div style={{ display:'flex', gap:10, alignItems:'center' }}>
+            <button className="btn btn-ghost btn-sm" onClick={() => generatePDF(entry, DOMAINS, PASS_SCORE, fmt)}>↓ PDF</button>
+            <button className="btn btn-ghost btn-sm" onClick={onClose}>✕ Close</button>
+          </div>
+        </div>
+        <div style={{ padding:'24px' }}>
+          {/* Score hero */}
+          <div className="r-hero" style={{ marginBottom:16 }}>
+            <Ring pct={entry.score} passed={entry.passed}/>
+            <div className="r-verdict" style={{ color: entry.passed ? '#059669' : '#DC2626' }}>
+              {entry.passed ? '✓ Accreditation Passed' : '✗ Not Yet Accredited'}
+            </div>
+            <div className="r-meta">{entry.correct} correct out of {entry.total} · {fmt(entry.time)}</div>
+          </div>
+
+          {/* Domain breakdown */}
+          <div className="card" style={{ marginBottom:16, overflow:'hidden' }}>
+            <div className="card-header"><span className="card-header-label">Score by domain</span></div>
+            {domainStats.map(d => {
+              const col = d.pct >= 80 ? '#059669' : d.pct >= 60 ? '#F59E0B' : '#DC2626'
+              return (
+                <div className="d-row" key={d.key}>
+                  <span className="d-label">{d.label}</span>
+                  <div className="d-track"><div className="d-fill" style={{ width:`${d.pct}%`, background:col }}/></div>
+                  <span className="d-pct" style={{ color:col }}>{d.pct}%</span>
+                </div>
+              )
+            })}
+          </div>
+
+          {/* Incorrect questions */}
+          {incorrect.length > 0 && (
+            <div>
+              <div style={{ background:'white', border:'1px solid var(--sand)', padding:'14px 20px', borderBottom:'none' }}>
+                <div className="review-hdr" style={{ margin:0 }}>
+                  Questions answered incorrectly
+                  <span className="review-count">{incorrect.length}</span>
+                </div>
+              </div>
+              {incorrect.map((a, idx) => {
+                const qd = a.question
+                return (
+                  <div className="review-card" key={idx}>
+                    <div className="review-q-top">
+                      <div className="review-domain">{DOMAINS[a.domain]}</div>
+                      <div className="review-q-text">{qd.q}</div>
+                    </div>
+                    <div className="review-opts">
+                      {qd.options.map((opt, i) => {
+                        const isYours   = i === a.selectedIdx
+                        const isCorrect = i === qd.answer
+                        const cls = isCorrect ? 'correct' : isYours ? 'yours' : ''
+                        return (
+                          <div className={`review-opt ${cls}`} key={i}>
+                            <span className="review-opt-key">{keys[i]}</span>
+                            <span style={{ flex:1 }}>{opt}</span>
+                            {isYours && !isCorrect && <span className="review-label yours">Their answer</span>}
+                            {isCorrect && <span className="review-label correct">Correct</span>}
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          )}
+          {incorrect.length === 0 && (
+            <div style={{ padding:'20px', textAlign:'center', color:'#059669', fontWeight:600, border:'1px solid rgba(5,150,105,0.2)', background:'rgba(5,150,105,0.05)', fontSize:13 }}>
+              All questions answered correctly.
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -363,6 +579,7 @@ function Admin({ onBack }) {
   const [users, setUsers] = useState([])
   const [loadingData, setLoadingData] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState(null)
+  const [viewEntry, setViewEntry] = useState(null)
 
   // Load data when admin authenticates
   useEffect(() => {
@@ -423,6 +640,7 @@ function Admin({ onBack }) {
     <div className="page fade-in">
       <Header right={<button className="btn btn-ghost btn-sm" onClick={onBack}>← Exit Admin</button>}/>
       <div style={{ maxWidth:1080, margin:'0 auto', padding:'36px 24px 80px' }}>
+        {viewEntry && <ResultDetail entry={viewEntry} onClose={() => setViewEntry(null)}/>}
 
         {/* Summary stats */}
         <div style={{ marginBottom:24 }}>
@@ -476,7 +694,7 @@ function Admin({ onBack }) {
               <table className="admin-table">
                 <thead>
                   <tr>
-                    {['#','Name','Email','Score','Result','Correct','Time','Date',''].map(h => (
+                    {['#','Name','Email','Score','Result','Correct','Time','Date','',''].map(h => (
                       <th key={h}>{h}</th>
                     ))}
                   </tr>
@@ -496,6 +714,14 @@ function Admin({ onBack }) {
                         <div style={{ fontSize:10, marginTop:1, color:'#bbb' }}>
                           {new Date(s.date).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}
                         </div>
+                      </td>
+                      <td style={{ textAlign:'right' }}>
+                        <button onClick={() => setViewEntry(s)}
+                          style={{ fontSize:11, fontWeight:600, padding:'4px 12px', background:'var(--cream)', color:'var(--gray)', border:'1px solid var(--sand)', cursor:'pointer', fontFamily:'Inter,sans-serif', letterSpacing:'0.06em', textTransform:'uppercase' }}
+                          onMouseEnter={e => { e.target.style.borderColor='#1A1A1A'; e.target.style.color='#1A1A1A' }}
+                          onMouseLeave={e => { e.target.style.borderColor='var(--sand)'; e.target.style.color='var(--gray)' }}>
+                          View
+                        </button>
                       </td>
                       <td style={{ textAlign:'right', paddingRight:16 }}>
                         {confirmDelete === s.id ? (
