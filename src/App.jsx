@@ -3,10 +3,10 @@ import {
   PASS_SCORE, TEST_LENGTH, ADMIN_PASS,
   DOMAINS, buildTest, getStudyRecs, fmt,
   ALL_QUESTIONS, loadUsers, saveUser, loadScores, saveResult, deleteResult,
-  MAX_DAILY_ATTEMPTS, attemptsToday, ALLOWED_EMAILS
+  MAX_DAILY_ATTEMPTS, attemptsToday, ALLOWED_EMAILS, BADGE_B64
 } from './questions'
 
-const APP_VERSION = 'v1.0.5'
+const APP_VERSION = 'v1.0.6'
 
 /* ── Compass SVG icon ───────────────────────────────────────────────── */
 function CompassIcon({ size = 22 }) {
@@ -352,17 +352,33 @@ function Results({ entry, onRetake }) {
         </div>
 
         {/* Verdict study block */}
-        <div className={`study-block ${entry.passed ? 'ok' : ''}`} style={{ marginBottom:2 }}>
-          <div className={`study-label ${entry.passed ? 'ok' : ''}`}>
-            {entry.passed ? 'You\'re cleared to assess' : 'Before you retake'}
+        {entry.passed ? (
+          <div style={{ background:'white', border:'1px solid var(--sand)', marginBottom:2, overflow:'hidden' }}>
+            <div style={{ background:'#1A1A1A', padding:'32px 32px 28px', textAlign:'center' }}>
+              <div className="eyebrow" style={{ color:'#E8FF00', marginBottom:10 }}>Accreditation Achieved</div>
+              <div style={{ fontSize:'clamp(20px,3vw,28px)', fontWeight:700, color:'white', letterSpacing:-0.5, lineHeight:1.2, marginBottom:14 }}>
+                Congratulations, {entry.name.split(' ')[0]}.
+              </div>
+              <p style={{ fontSize:14, color:'rgba(255,255,255,0.72)', lineHeight:1.85, maxWidth:500, margin:'0 auto' }}>
+                You are now a fully conscious assessor. You've demonstrated the knowledge required to conduct Conscious Compass
+                assessments and are cleared to evaluate brands across all eight dimensions of Brand Consciousness.
+              </p>
+            </div>
+            <div style={{ padding:'36px 32px 32px', textAlign:'center', background:'var(--cream)', borderTop:'1px solid var(--sand)' }}>
+              <img src={BADGE_B64} alt="Fully Conscious Badge"
+                style={{ width:200, height:200, display:'block', margin:'0 auto 20px' }}/>
+              <div style={{ fontSize:10, fontWeight:700, letterSpacing:'0.14em', textTransform:'uppercase', color:'var(--gray)', marginBottom:8 }}>
+                Your Badge
+              </div>
+              <p style={{ fontSize:13, color:'var(--gray)', lineHeight:1.75, maxWidth:420, margin:'0 auto' }}>
+                Keep the four assessor responsibilities front of mind: Input Integrity, Score Validation,
+                Brand Expertise and Actionable Insight. The Compass is only as good as the expertise and integrity you bring to it.
+              </p>
+            </div>
           </div>
-          {entry.passed ? (
-            <p className="study-text">
-              Well done, {entry.name.split(' ')[0]}. You've demonstrated the knowledge required to conduct Conscious Compass assessments.
-              Keep the four assessor responsibilities front of mind — Input Integrity, Score Validation, Brand Expertise and Actionable Insight.
-              The Compass is only as good as the expertise and integrity you bring to it.
-            </p>
-          ) : (
+        ) : (
+          <div className="study-block" style={{ marginBottom:2 }}>
+            <div className="study-label">Before you retake</div>
             <>
               <p className="study-text" style={{ marginBottom: recs.length ? 14 : 0 }}>
                 You scored {entry.score}% against a pass mark of {PASS_SCORE}%. Review the incorrect questions below,
@@ -375,8 +391,8 @@ function Results({ entry, onRetake }) {
                 </div>
               ))}
             </>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Incorrect questions */}
         {incorrect.length > 0 && (
