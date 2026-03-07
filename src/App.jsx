@@ -6,7 +6,7 @@ import {
   MAX_DAILY_ATTEMPTS, attemptsToday, ALLOWED_EMAILS, BADGE_B64
 } from './questions'
 
-const APP_VERSION = 'v1.0.6'
+const APP_VERSION = 'v1.0.7'
 
 /* ── Compass SVG icon ───────────────────────────────────────────────── */
 function CompassIcon({ size = 22 }) {
