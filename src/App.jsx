@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import {
   PASS_SCORE, TEST_LENGTH, ADMIN_PASS,
   DOMAINS, buildTest, getStudyRecs, fmt,
-  ALL_QUESTIONS, loadUsers, saveUser, loadScores, saveResult,
+  ALL_QUESTIONS, loadUsers, saveUser, loadScores, saveResult, deleteResult,
   MAX_DAILY_ATTEMPTS, attemptsToday, ALLOWED_EMAILS
 } from './questions'
 
@@ -65,22 +65,27 @@ function Ring({ pct, passed }) {
 function Cover({ onStart, onAdmin }) {
   const [form, setForm] = useState({ name:'', email:'' })
   const [err, setErr] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const f = k => e => setForm(p => ({ ...p, [k]: e.target.value }))
   const ready = form.name.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)
 
-  const go = () => {
+  const go = async () => {
     if (!form.name.trim()) { setErr('Please enter your full name.'); return }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) { setErr('Please enter a valid email.'); return }
     if (!ALLOWED_EMAILS.includes(form.email.trim().toLowerCase())) {
       setErr('This email address is not authorised for beta access. Please contact your Antenna administrator.')
       return
     }
-    if (attemptsToday(form.email) >= MAX_DAILY_ATTEMPTS) {
+    setLoading(true)
+    const attempts = await attemptsToday(form.email.trim())
+    if (attempts >= MAX_DAILY_ATTEMPTS) {
       setErr(`You've reached the limit of ${MAX_DAILY_ATTEMPTS} attempts for today. Please try again tomorrow.`)
+      setLoading(false)
       return
     }
-    saveUser(form.name.trim(), form.email.trim())
+    await saveUser(form.name.trim(), form.email.trim())
+    setLoading(false)
     setErr('')
     onStart(form.name.trim(), form.email.trim())
   }
@@ -131,8 +136,8 @@ function Cover({ onStart, onAdmin }) {
               </div>
             </div>
 
-            <button className="btn btn-primary btn-full" onClick={go} disabled={!ready}>
-              Begin Accreditation Test →
+            <button className="btn btn-primary btn-full" onClick={go} disabled={!ready || loading}>
+              {loading ? 'Checking…' : 'Begin Accreditation Test →'}
             </button>
           </div>
         </div>
@@ -353,14 +358,23 @@ function Admin({ onBack }) {
   const [err, setErr] = useState('')
   const [authed, setAuthed] = useState(false)
   const [activeTab, setActiveTab] = useState('results')
-  const [scores, setScores] = useState(loadScores)
+  const [scores, setScores] = useState([])
+  const [users, setUsers] = useState([])
+  const [loadingData, setLoadingData] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState(null)
-  const users = loadUsers()
 
-  const deleteScore = (idx) => {
-    const updated = scores.filter((_, i) => i !== idx)
-    try { localStorage.setItem('cc_scores_v4', JSON.stringify(updated)) } catch {}
-    setScores(updated)
+  // Load data when admin authenticates
+  useEffect(() => {
+    if (!authed) return
+    setLoadingData(true)
+    Promise.all([loadScores(), loadUsers()])
+      .then(([s, u]) => { setScores(s); setUsers(u) })
+      .finally(() => setLoadingData(false))
+  }, [authed])
+
+  const deleteScore = async (id) => {
+    await deleteResult(id)
+    setScores(prev => prev.filter(s => s.id !== id))
     setConfirmDelete(null)
   }
 
@@ -448,7 +462,11 @@ function Admin({ onBack }) {
 
         {/* Results table */}
         {activeTab === 'results' && (
-          scores.length === 0 ? (
+          loadingData ? (
+            <div className="card" style={{ padding:'48px 24px', textAlign:'center', color:'#666666', fontSize:14 }}>
+              Loading results…
+            </div>
+          ) : scores.length === 0 ? (
             <div className="card" style={{ padding:'48px 24px', textAlign:'center', color:'#666666', fontSize:14 }}>
               No results yet. Share the test link with your team to get started.
             </div>
@@ -479,14 +497,14 @@ function Admin({ onBack }) {
                         </div>
                       </td>
                       <td style={{ textAlign:'right', paddingRight:16 }}>
-                        {confirmDelete === i ? (
+                        {confirmDelete === s.id ? (
                           <div style={{ display:'flex', gap:6, justifyContent:'flex-end', alignItems:'center' }}>
                             <span style={{ fontSize:11, color:'#666', whiteSpace:'nowrap' }}>Sure?</span>
-                            <button onClick={() => deleteScore(i)} style={{ fontSize:11, fontWeight:700, padding:'4px 10px', background:'#DC2626', color:'white', border:'none', cursor:'pointer', fontFamily:'Inter,sans-serif' }}>Yes</button>
+                            <button onClick={() => deleteScore(s.id)} style={{ fontSize:11, fontWeight:700, padding:'4px 10px', background:'#DC2626', color:'white', border:'none', cursor:'pointer', fontFamily:'Inter,sans-serif' }}>Yes</button>
                             <button onClick={() => setConfirmDelete(null)} style={{ fontSize:11, fontWeight:600, padding:'4px 10px', background:'#F0EEEA', color:'#666', border:'1px solid #D9D6D0', cursor:'pointer', fontFamily:'Inter,sans-serif' }}>No</button>
                           </div>
                         ) : (
-                          <button onClick={() => setConfirmDelete(i)} title="Delete result"
+                          <button onClick={() => setConfirmDelete(s.id)} title="Delete result"
                             style={{ background:'none', border:'none', cursor:'pointer', color:'#CCC', padding:'4px 6px', lineHeight:1, fontSize:15, fontFamily:'Inter,sans-serif' }}
                             onMouseEnter={e => e.target.style.color='#DC2626'}
                             onMouseLeave={e => e.target.style.color='#CCC'}>
@@ -504,7 +522,11 @@ function Admin({ onBack }) {
 
         {/* Users table */}
         {activeTab === 'users' && (
-          users.length === 0 ? (
+          loadingData ? (
+            <div className="card" style={{ padding:'48px 24px', textAlign:'center', color:'#666666', fontSize:14 }}>
+              Loading users…
+            </div>
+          ) : users.length === 0 ? (
             <div className="card" style={{ padding:'48px 24px', textAlign:'center', color:'#666666', fontSize:14 }}>
               No registered users yet.
             </div>
@@ -556,7 +578,7 @@ export default function App() {
     setPhase('quiz')
   }
 
-  const handleComplete = (answers, elapsed) => {
+  const handleComplete = async (answers, elapsed) => {
     const cor = answers.filter(a => a.correct).length
     const pct = Math.round((cor / answers.length) * 100)
     const passed = pct >= PASS_SCORE
@@ -566,7 +588,7 @@ export default function App() {
       time: elapsed, passed, date: new Date().toISOString(), answers,
     }
     setEntry(rec)
-    saveResult(rec)
+    await saveResult(rec)
     setPhase('results')
   }
 

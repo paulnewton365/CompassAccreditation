@@ -1,8 +1,6 @@
 export const PASS_SCORE  = 80
 export const TEST_LENGTH = 25
 export const ADMIN_PASS  = 'compass2025'
-export const USERS_KEY   = 'cc_users_v1'
-export const SCORES_KEY  = 'cc_scores_v4'
 
 export const DOMAINS = {
   CONSCIOUS: 'What is a Conscious Brand',
@@ -42,6 +40,11 @@ export const ALL_QUESTIONS = [
   { id:'c14', domain:'CONSCIOUS', q:'The VISIONARY attribute is primarily concerned with which question?', options:['Does the brand invest in long-term brand-building rather than solely short-term performance marketing activity?','Does the brand stand for something meaningful beyond its commercial activity and look beyond the immediate horizon?','Does the brand have a clear and differentiated market position that is consistently communicated to all audiences?','Does the brand demonstrate awareness of future trends and translate these into forward-looking content and campaigns?'], answer:1 },
   { id:'c15', domain:'CONSCIOUS', q:'What is the key distinction between the REFLECTIVE and SENTIENT attributes?', options:['REFLECTIVE focuses on identity clarity and internal-external alignment; SENTIENT focuses on emotional resonance and creative distinctiveness','REFLECTIVE measures consistency of visual identity; SENTIENT measures the depth of audience understanding and research','REFLECTIVE is about how the brand talks about itself; SENTIENT is about how audiences talk about the brand','REFLECTIVE assesses strategic clarity; SENTIENT assesses tactical execution quality across channels'], answer:0 },
 
+  { id:'c16', domain:'CONSCIOUS', q:'A brand with a modest marketing budget operates with a clear purpose, consistent messaging, and genuine audience understanding across all touchpoints. A well-funded competitor spends ten times as much but lacks coherence and strategic intent. What does this comparison most clearly illustrate?', options:['The well-funded brand will ultimately prevail because resources determine long-term competitive position','Brand consciousness is primarily a function of budget allocation rather than strategic intent','Brand consciousness is not determined by budget — it reflects whether a brand is genuinely invested in how it shows up everywhere','The modest brand has made the right short-term choices but will need significant investment to sustain its position'], answer:2 },
+  { id:'c17', domain:'CONSCIOUS', q:'Which sequence of questions correctly reflects how a conscious brand prioritises its thinking, as described in the framework?', options:['"How do we do this?" then "Why are we doing this?" — execution drives strategy in a conscious brand','"Why are we doing this?" then "How do we do this?" — purpose precedes execution in every conscious brand decision','"What are we saying?" then "Who are we talking to?" — message clarity enables audience understanding','"Does this hit the metrics?" then "Does this feel like us?" — performance validates brand identity'], answer:1 },
+  { id:'c18', domain:'CONSCIOUS', q:'A B2B2C brand must demonstrate brand consciousness across which combination of dimensions to be considered fully conscious?', options:['B2B only — professional audience trust signals take priority over consumer emotional metrics in all hybrid models','B2C only — end consumer experience and emotional connection outweigh the professional audience layer','Both B2B and B2C dimensions simultaneously — the brand must serve professional audiences while also building emotional connection with end consumers','Alternating B2B and B2C focus by campaign cycle — consciousness cannot be maintained across both dimensions at once'], answer:2 },
+  { id:'c19', domain:'CONSCIOUS', q:'Which of the following most accurately describes how the Conscious Compass defines "observable evidence" in the context of brand assessment?', options:['Evidence sourced exclusively from peer-reviewed publications and independently audited reports','Any information the brand shares with the assessor directly, including internal strategy documents and analytics','Publicly verifiable information that external audiences can access and form judgements from — the brand as the world actually experiences it','Evidence that has been corroborated by at least two independent third-party sources within the past 90 days'], answer:2 },
+
   // IDENTIFY (19)
   { id:'i1', domain:'IDENTIFY', q:"A technology brand's CEO is regularly quoted in tier-1 industry publications, delivers keynotes at major conferences, and publishes original research that analysts and competitors cite. Which attribute does this most strongly evidence?", options:['INTENTIONAL — the brand demonstrates professional credibility through consistent external presentation','COGENT — the brand uses data and strategic insight to inform its marketing decisions','AWAKE — the brand leads industry discourse and proactively shapes narratives in its category','VISIONARY — the brand articulates a forward-looking perspective on the future of its industry'], answer:2 },
   { id:'i2', domain:'IDENTIFY', q:"A brand's website scores 94 on PageSpeed, meets WCAG 2.1 AA accessibility standards, uses professional photography throughout, and features clear logical conversion paths. Which attribute is most evidenced?", options:["REFLECTIVE — consistent and high-quality visual presentation across all owned digital touchpoints","COGENT — data-driven optimisation of the brand's primary digital channel and user experience","INTENTIONAL — the brand operates with deliberate professionalism and attention to detail throughout","ATTENTIVE — the brand delivers a carefully considered and quality digital experience for its audiences"], answer:3 },
@@ -63,6 +66,12 @@ export const ALL_QUESTIONS = [
   { id:'i18', domain:'IDENTIFY', q:"A brand ranks on page one for all key strategic terms, its content directly addresses documented audience search intent, its case studies reference specific traffic and conversion metrics, and it appears with accurate well-framed descriptions in ChatGPT and Claude when users ask about its category. Which attribute does this profile most strongly evidence?", options:['AWARE — the brand deeply understands its audiences and consistently delivers content that meets their information needs','ATTENTIVE — the brand pays close attention to the quality and discoverability of every piece of content it publishes','COGENT — the brand demonstrates sophisticated evidence-based marketing through strong SEO fundamentals, AI search optimisation, and visible measurement culture','AWAKE — the brand is shaping category conversations by ensuring it is found and cited as an authority across all channels'], answer:2 },
   { id:'i19', domain:'IDENTIFY', q:"A brand has a verified Wikipedia page, registered trademarks in key markets, active accreditations displayed on its website, and its leadership team has verified LinkedIn profiles with significant follower counts. Which attribute does this most directly evidence?", options:['AWAKE — the brand is building an authoritative presence that shapes how it is found and understood externally','REFLECTIVE — the brand has a consistent and well-presented identity across all public-facing touchpoints','INTENTIONAL — the brand cultivates professional credibility through recognised standards and verifiable substance','AWARE — the brand understands the trust signals that matter to its audiences and actively manages them'], answer:2 },
 
+  { id:'i20', domain:'IDENTIFY', q:"A brand's Glassdoor profile shows 4.6/5 stars with reviews citing 'genuine mission alignment', 'people who believe in what we do', and 'culture matches the marketing'. Its website and LinkedIn make bold claims about purpose and values. How does this profile affect the assessment?", options:["It has no effect — employee review sites are outside the publicly observable scope of the Conscious Compass framework","It creates STRONG REFLECTIVE signals — internal culture visibly matches external brand positioning and confirms claims are grounded in reality","It creates STRONG INTENTIONAL signals — the brand is demonstrating professional credibility through its recruitment and retention performance","It creates MODERATE signals only — Glassdoor reviews are self-selecting and cannot be treated as reliable evidence"], answer:1 },
+  { id:'i21', domain:'IDENTIFY', q:"A brand's About page opens with: 'We were founded in 2008 and serve over 3,000 clients across 12 countries.' There is no purpose statement, no forward vision, and no articulation of why the brand exists beyond its service offering. Which attribute does this most directly evidence as WEAK?", options:['REFLECTIVE — the brand has failed to establish a clear and consistent identity across its owned digital channels','INTENTIONAL — the brand lacks the credibility signals required to be taken seriously in its category','VISIONARY — the brand shows no evidence of purpose beyond commercial activity or any meaningful direction','COGENT — the brand is not applying strategic thinking to the structure and content of its owned digital properties'], answer:2 },
+  { id:'i22', domain:'IDENTIFY', q:'A brand delivers polished keynote presentations at major industry conferences, but its sales materials use different fonts, its email signatures are inconsistent, and its privacy policy page is visually disconnected from the rest of the site. What does this pattern most accurately indicate?', options:['STRONG INTENTIONAL signals overall — high-visibility touchpoints are the primary measure of professional credibility','MODERATE INTENTIONAL signals — the brand performs well at flagship moments but lacks the discipline across smaller touchpoints that defines full professionalism','STRONG ATTENTIVE signals — conference delivery demonstrates the attention to detail that is central to this attribute','Inconclusive — inconsistencies in supporting materials do not affect how the brand is perceived by professional audiences'], answer:1 },
+  { id:'i23', domain:'IDENTIFY', q:"A brand's AI Reputation check returns: ChatGPT gives a detailed, accurate, and positive description; Claude provides a brief but accurate summary; Gemini has no knowledge of the brand at all. How should this finding be treated in scoring?", options:['As STRONG COGENT signals — two out of three AI platforms recognising the brand indicates a well-established GEO presence','As a nuanced COGENT finding — the brand has meaningful but incomplete AI visibility, and the gap is a relevant signal in itself','As WEAK overall — a brand with no Gemini presence cannot be considered to have meaningful AI reputation','As excluded from COGENT scoring — AI reputation differences across platforms are considered platform-specific variance, not a brand signal'], answer:1 },
+  { id:'i24', domain:'IDENTIFY', q:"A consumer brand's Instagram features user-generated content from genuine customers, community conversations in the comments, and original creative that generates sharing and discussion. Its TikTok account has consistent posting but uses the same repurposed content with minimal native adaptation. How should this profile be assessed?", options:['STRONG SENTIENT signals overall — high-quality community engagement on Instagram outweighs the repurposed TikTok content','STRONG AWARE signals on Instagram, MODERATE SENTIENT signals overall — the brand connects genuinely on one platform but lacks the creative intelligence to adapt across channels','STRONG ATTENTIVE signals — consistent multi-platform posting demonstrates the discipline and quality focus this attribute measures','MODERATE COGENT signals — the brand has a data-informed content strategy but has not yet optimised for platform-specific performance'], answer:1 },
+
   // TOOL (11)
   { id:'t1', domain:'TOOL', q:'What are the six workflow steps of the Conscious Compass assessment in the correct sequence?', options:['Setup, Social and Paid, Website, AI Reputation, Earned Media, Score and Export','Setup, Website, Social and Paid, AI Reputation, Earned Media, Score and Export','Setup, Earned Media, Website, Social and Paid, AI Reputation, Score and Export','Brief, Website, Social and Paid, Earned Media, AI Reputation, Score and Export'], answer:1 },
   { id:'t2', domain:'TOOL', q:'What four pieces of information are entered during the Setup step of the assessment?', options:['Brand name, target audience definition, primary competitors, and campaign objectives','Brand name, founding date, primary industry vertical, and annual marketing investment','Brand name, website URL, industry, and business model (B2B, B2C or B2B2C)','Brand name, social media handles, primary markets served, and number of employees'], answer:2 },
@@ -75,6 +84,10 @@ export const ALL_QUESTIONS = [
   { id:'t9', domain:'TOOL', q:'The three AI platforms return markedly different descriptions of the same brand — one is detailed and positive, one is brief, and one has no knowledge of the brand at all. How should the assessor handle this?', options:['Use only the most positive response as it represents the most complete information available','Average the three responses and enter a summary that reflects the midpoint of the three descriptions','Record all three responses as entered, note the discrepancy, and let it inform the AI Reputation score appropriately','Disregard the AI Reputation step entirely since inconsistent results make scoring unreliable'], answer:2 },
   { id:'t10', domain:'TOOL', q:'What report formats does the Conscious Compass generate at the Score and Export step?', options:['PDF spider chart only, with a summary table of all 8 attribute scores','PDF with spider chart and narrative, plus a DOCX version, plus a copyable text summary','A live dashboard link that can be shared with the client for interactive exploration','An automated email report sent directly to the client with a branded PDF attachment'], answer:1 },
   { id:'t11', domain:'TOOL', q:'Under what circumstances is the rescoring function most appropriately used?', options:['When a client disputes a score and the assessor wants to adjust it to avoid a difficult conversation','When the framework has been updated to a new version and historical assessments need recalibration','When an assessor realises they entered incorrect or incomplete evidence during the original assessment','Both when the framework is updated and when incorrect evidence was entered, but never due to client pressure'], answer:3 },
+
+  { id:'t12', domain:'TOOL', q:'Which social platforms and trust sources are assessed together in Step 3 of the Conscious Compass workflow?', options:['Facebook, YouTube, TikTok, and Instagram — the primary consumer social platforms','LinkedIn, X, Instagram, Reddit, and Wikipedia — the full set of social and trust sources assessed in this step','LinkedIn, Glassdoor, Trustpilot, and WIPO — the professional trust signal sources',"Twitter, LinkedIn, YouTube, and the brand's own community forums"], answer:1 },
+  { id:'t13', domain:'TOOL', q:'Why does the Conscious Compass framework assess AI reputation as a distinct step rather than inferring it from organic search performance?', options:['AI reputation is legally required to be disclosed in all formal brand assessments','AI platforms synthesise and present brand descriptions independently, and how a brand appears in AI-generated responses is a separate and increasingly important reputational signal','AI reputation simply confirms organic search rankings and is included for completeness rather than as a standalone signal','AI platforms use the same data as search engines, so the step is a verification checkpoint rather than new information'], answer:1 },
+  { id:'t14', domain:'TOOL', q:'An assessor completes all six workflow steps but realises after saving that they assessed the wrong Instagram account for the brand — a fan account rather than the official one. What is the correct action?', options:['Note the discrepancy as a caveat in the final report and proceed with the scores as generated','Use the rescore function to re-enter the correct Instagram evidence and update the relevant attribute scores accordingly','Begin an entirely new assessment from scratch — saved assessments cannot be corrected once submitted','Contact the brand directly to request their official social media handles before proceeding further'], answer:1 },
 
   // SCORING (11)
   { id:'s1', domain:'SCORING', q:'What are the three mechanisms that combine to produce each attribute score in the Conscious Compass?', options:['Evidence Gathering, AI Analysis, and Human Validation and Review','Research, Classification, and Industry Benchmarking','The Rubric, Signal Tiering, and Business Model Weighting','Observation, Scoring, and Assessor Calibration'], answer:2 },
@@ -89,6 +102,11 @@ export const ALL_QUESTIONS = [
   { id:'s10', domain:'SCORING', q:'Which of the following correctly describes a MODERATE signal within the Compass rubric?', options:['Evidence that appears consistently and unambiguously across multiple independent channels and sources','Evidence that is present and genuinely demonstrated but applied inconsistently or only partially across touchpoints','Evidence that is entirely absent or contradicted by other observable signals in the public domain','Evidence that is self-reported by the brand and has not been corroborated by any independent third party'], answer:1 },
   { id:'s11', domain:'SCORING', q:'How does Signal Tiering interact with Business Model Weighting in the scoring formula?', options:['They operate independently — signal tiering sets the raw score and weighting is applied afterwards to produce the final figure','Weighting is applied first to determine which signals are relevant, then tiering classifies the evidence that remains','They are applied simultaneously — strong signals automatically trigger higher multipliers than moderate or weak ones','Signal tiering is only relevant for B2C brands; B2B brands use a simplified scoring model based on weighting alone'], answer:0 },
 
+  { id:'s12', domain:'SCORING', q:'What are the correct weighting multipliers applied to a B2C brand in the Conscious Compass scoring formula?', options:['COGENT ×1.25, INTENTIONAL ×1.20, SENTIENT ×0.80','SENTIENT ×1.20, AWARE ×1.15, COGENT ×0.90','VISIONARY ×1.20, COGENT ×1.10, AWARE ×1.15','AWAKE ×1.25, REFLECTIVE ×1.15, ATTENTIVE ×0.90'], answer:1 },
+  { id:'s13', domain:'SCORING', q:'What are the correct weighting multipliers applied to a B2B2C brand in the Conscious Compass scoring formula?', options:['SENTIENT ×1.20, AWARE ×1.15, COGENT ×0.90','COGENT ×1.25, INTENTIONAL ×1.20, SENTIENT ×0.80','VISIONARY ×1.20, COGENT ×1.10, AWARE ×1.15','AWAKE ×1.20, INTENTIONAL ×1.15, REFLECTIVE ×1.10'], answer:2 },
+  { id:'s14', domain:'SCORING', q:'Which component of the 3-part scoring anatomy defines what Strong, Moderate and Weak evidence looks like for each of the 8 attributes?', options:['Signal Tiering — it classifies each piece of gathered evidence into the appropriate tier','Weighting — it sets the standards that determine how much each attribute contributes to the final score','The Rubric — it defines the standard for each attribute and evolves as the framework develops','The Formula — it establishes the baseline for what constitutes sufficient evidence per attribute'], answer:2 },
+  { id:'s15', domain:'SCORING', q:'The formula for calculating a final Conscious Compass score is stated explicitly in the framework. Which of the following correctly represents it?', options:['Signal Tiering + Weighting = Raw Score ÷ 8 = Final Score','Rubric + Signal Tiering = Raw Score × Weight = Weighted Score → Average of 8 = Final Score','Evidence Input × Multiplier = Attribute Score → Sum of 8 ÷ Weighting = Final Score','Raw Score + Business Model Adjustment = Weighted Score → Highest 6 of 8 = Final Score'], answer:1 },
+
   // MATURITY (10)
   { id:'m1', domain:'MATURITY', q:'A brand scores 67 overall on the Conscious Compass. Which maturity stage does this place them in?', options:['Establishing — the brand is beginning to develop intentional and consistent presence across channels','Differentiating — the brand is standing out intentionally and consistently from its competitors','Leading — the brand is actively shaping industry narratives and setting standards for others','Transforming — the brand defines the category and others actively aspire to emulate its approach'], answer:1 },
   { id:'m2', domain:'MATURITY', q:'A brand has a strong overall score of 74 but REFLECTIVE scores only 38. What is the most strategically significant interpretation?', options:['The low REFLECTIVE score is an anomaly that should be disregarded given the strength of the overall profile','The brand should be reclassified into a lower maturity stage to account for the significant attribute gap','The gap represents a specific strategic vulnerability that could undermine the brand\'s overall strength if left unaddressed','The assessor should rerun the assessment to verify whether the low score reflects a data gap or genuine weakness'], answer:2 },
@@ -100,6 +118,10 @@ export const ALL_QUESTIONS = [
   { id:'m8', domain:'MATURITY', q:'A brand scores 48 overall on the Conscious Compass. Which maturity stage does this place them in, and what best describes where they are in their brand development?', options:['Foundational — the brand has some elements in place but execution is inconsistent and many fundamentals are still missing','Establishing — brand identity is forming, intentional choices are beginning to emerge, and the brand is functional though not yet distinctive','Differentiating — the brand has clear positioning and purposeful execution and is beginning to stand out from competitors','Leading — the brand is shaping industry narratives and others look to it as an example to follow'], answer:1 },
   { id:'m9', domain:'MATURITY', q:"A client pushes back on their maturity stage, saying: 'We've been operating for 15 years — we can't be Establishing.' What is the most effective response?", options:['Agree to revisit the scoring and apply additional weighting for brand heritage and longevity','Explain that maturity in the Compass is determined by observable evidence, not operational history — and walk through the specific signals that produced the score','Acknowledge the limitation and suggest adding a qualitative narrative to the report to contextualise the brand\'s heritage','Agree to present two scores — one evidence-based and one incorporating self-reported internal data from the client'], answer:1 },
   { id:'m10', domain:'MATURITY', q:'What characterises a brand in the Foundational stage (26–39) of the maturity model?', options:['The brand is largely invisible or incoherent to its audiences with significant gaps across almost all attributes','Some brand elements are in place but execution is inconsistent and many fundamentals are still missing — the brand is building basic presence','Brand identity is forming and intentional choices are beginning to emerge — the brand is functional though not yet distinctive','The brand has clear positioning and purposeful execution but has not yet begun to shape industry narratives'], answer:1 },
+
+  { id:'m11', domain:'MATURITY', q:'Which description best characterises the transition from Foundational to Establishing in the brand consciousness maturity model?', options:['Moving from "barely exists" to "has the basics" — the brand becomes recognisable and establishes a first presence','Moving from "has pieces" to "becoming coherent" — disparate elements begin working together as a unified brand','Moving from "competent" to "distinctive" — the brand develops an ownable position that sets it apart from competitors','Moving from "standing out" to "setting the standard" — the brand becomes a reference point for others in the category'], answer:1 },
+  { id:'m12', domain:'MATURITY', q:'A brand scores 88 on the Conscious Compass. What maturity stage does this represent and what is the most accurate description of where the brand stands?', options:['Leading — the brand is actively shaping industry narratives and others look to it as an example to follow','Transforming — this is category-defining excellence that changes what audiences expect from all brands in the space','Differentiating — the brand has clear positioning and purposeful execution but has not yet reached industry-leading status','Establishing — the brand has strong foundations that position it well for future category leadership'], answer:1 },
+  { id:'m13', domain:'MATURITY', q:'What is the key distinction between the Differentiating and Leading maturity stages?', options:['Differentiating brands have scored above 56 consistently; Leading brands have completed multiple Compass assessments over time','Differentiating brands are noticed and remembered with clear positioning; Leading brands set agendas and others actively look to them as category examples','Differentiating brands have strong paid media performance; Leading brands are primarily driven by strong earned media','Differentiating brands serve B2C markets; Leading brands typically operate in B2B or professional services categories'], answer:1 },
 
   // ASSESSOR (14)
   { id:'a1', domain:'ASSESSOR', q:"The Compass is described as 'AI-assisted human intelligence'. What is the most accurate description of the assessor's role?", options:['The assessor enters data into the tool and the AI independently determines the scores and all recommendations','The assessor is the quality layer — ensuring evidence integrity, validating outputs, applying expertise, and turning scores into strategy',"The assessor's primary role is to present and explain the AI's output to clients in a clear and accessible way","The assessor reviews the AI-generated report and adjusts any scores where client relationships require sensitivity"], answer:1 },
@@ -117,6 +139,10 @@ export const ALL_QUESTIONS = [
   { id:'a13', domain:'ASSESSOR', q:"An assessor is under time pressure and considers skipping the AI Reputation step to save 15 minutes. What is the primary risk of doing so?", options:["Minimal risk — AI Reputation is a supplementary signal that rarely affects overall scores materially","The assessment will fail to save and the assessor will lose all progress to that point","The score will be formally flagged as incomplete and cannot be shared with a client until the step is completed","A significant source of third-party brand perception data is excluded, potentially producing a score that misrepresents how the brand is understood in the market"], answer:3 },
   { id:'a14', domain:'ASSESSOR', q:"What does being an accredited Compass assessor formally mean?", options:['The assessor has completed at least five client assessments under supervision and received a passing quality review','The assessor has demonstrated sufficient knowledge of the framework, methodology and their own responsibilities to conduct assessments independently','The assessor has been certified by an independent marketing industry body as competent to use the tool','The assessor has passed an annual recertification exam and maintained their accreditation through continuing professional development'], answer:1 },
 
+  { id:'a15', domain:'ASSESSOR', q:"The framework states that the Conscious Compass evaluates brands using 'entirely observable and verifiable evidence'. What does this mean in practice for how a brand's own website claims are treated?", options:['Website claims are fully trusted as first-party evidence and given the highest weighting in all attribute scoring','Website claims are excluded entirely — only third-party sources qualify as observable evidence in the framework','Website claims are included as owned-channel evidence and assessed alongside independent corroboration — strong claims need external validation to reach the top tier','Website claims must be approved by the brand before they can be included in an assessment'], answer:2 },
+  { id:'a16', domain:'ASSESSOR', q:"A brand's SENTIENT score returns unusually high despite the assessor observing that the brand uses stock imagery throughout, has no distinctive voice, and produces functional but forgettable content. What is the correct response?", options:["Accept the score — the AI has processed the full evidence base and the assessor's subjective reaction to creative work should not override the output","Reduce the score by a fixed amount and document the adjustment in the report for transparency","Challenge the output, surface the stock imagery and absence of creative distinction as specific contrary evidence, and adjust the score if the evidence warrants it","Resubmit the assessment with a different evidence set to see whether the score changes before making a judgement"], answer:2 },
+  { id:'a17', domain:'ASSESSOR', q:'A client provides internal campaign analytics, NPS scores, and brand tracking data to supplement their Compass assessment, saying the data will "paint a fuller picture." How should the assessor respond?', options:['Incorporate all provided data since richer evidence always produces a more accurate and defensible score','Decline all of it — the methodology requires all evidence to be publicly observable, so internal data cannot be accepted under any circumstances','Accept it as useful context for interpretation, but base all attribute scores exclusively on publicly observable evidence','Use the internal data to rescore attributes that appear low, since the brand has better knowledge of its own performance than any external assessor'], answer:1 },
+
   // ACTION (10)
   { id:'ac1', domain:'ACTION', q:'How does the Compass translate low attribute scores into specific Antenna service recommendations?', options:['The assessor selects relevant services manually from the Antenna catalogue based on their own professional judgement',"The tool's service mapping layer automatically connects low-scoring attributes to the most relevant Antenna services",'A senior Antenna strategist reviews the completed report and generates recommendations independently afterwards','Clients select from a pre-defined set of service packages linked to their overall maturity stage in the framework'], answer:1 },
   { id:'ac2', domain:'ACTION', q:'A brand scores 36 on REFLECTIVE. What type of Antenna service is most likely to be recommended and why?', options:['Paid media services — to increase visibility and commercial performance while identity issues are being resolved','SEO and performance marketing — to improve findability and drive inbound traffic to the brand\'s digital channels','Brand Strategy and Expression — to address the foundational gaps in authenticity, clarity and consistent identity','Social media management — to establish a more consistent and recognisable brand voice across active platforms'], answer:2 },
@@ -128,6 +154,9 @@ export const ALL_QUESTIONS = [
   { id:'ac8', domain:'ACTION', q:"A brand scores below 50 across six of the eight attributes. How should the assessor prioritise recommendations?", options:['Recommend all six low-scoring attributes simultaneously since every gap needs to be addressed urgently','Focus first on the two or three attributes with the lowest scores and the highest strategic impact on the brand\'s core commercial objectives','Focus first on the attributes most relevant to the client\'s current campaign priorities rather than the lowest scores','Begin with the attributes that are easiest to improve so the client can demonstrate quick wins to internal stakeholders'], answer:1 },
   { id:'ac9', domain:'ACTION', q:"How should an assessor introduce the Conscious Compass to a prospective client who has never heard of it before?", options:['Lead with the methodology — explain how the rubric, signal tiering and weighting formula work before showing an example output','Lead with a competitor or sector example to show the client what their market looks like scored through the framework','Send the framework deck in advance and schedule a follow-up call once they have had time to review the methodology','Request that the prospect completes a self-assessment first so the formal assessment has a benchmark to compare against'], answer:1 },
   { id:'ac10', domain:'ACTION', q:"After delivering a Compass report and recommendations, what is the most effective way to maintain the assessment's commercial momentum?", options:['Wait for the client to come back with a decision before following up, to avoid appearing pushy or commercially motivated','Schedule a 30-day check-in to review which recommendations the client has begun acting on and identify next steps','Immediately issue a formal proposal for all recommended services to capture the commercial opportunity while the report is front of mind','Share the report findings with the client\'s wider leadership team to build broader internal support for the investment required'], answer:1 },
+  { id:'ac11', domain:'ACTION', q:"A brand's AWAKE score has moved from 38 to 61 across two assessments six months apart, following a thought leadership programme Antenna recommended. How should an assessor use this data most effectively in the client relationship?", options:['As evidence that the initial score was too conservative and the methodology should be reviewed','As measurable proof that the thought leadership programme has directly shifted the brand\'s narrative leadership position — validating the investment and informing the next phase of work','As a signal to pause the programme and redirect budget toward lower-scoring attributes','As a case for reducing assessment frequency since the brand is clearly on the right trajectory'], answer:1 },
+  { id:'ac12', domain:'ACTION', q:"When mapping low attribute scores to Antenna service recommendations, what is the primary principle that should govern the assessor's approach?", options:['Lead with the highest-value services first to maximise the commercial opportunity generated by the assessment','Connect every recommendation explicitly to the evidence and score so the client understands why this specific service will move this specific needle','Present the full Antenna service catalogue to ensure the client has visibility of all available options','Limit recommendations to a single service per attribute to keep the scope focused and manageable'], answer:1 },
+  { id:'ac13', domain:'ACTION', q:'A brand is in the Establishing stage (score: 52) with particular weakness in REFLECTIVE and VISIONARY. What is the most strategically sound approach to service recommendations?', options:['Recommend services that address all low-scoring attributes simultaneously, since every gap is commercially relevant','Focus first on REFLECTIVE — without authentic brand identity and internal-external alignment, other improvements will lack a coherent foundation to build on','Focus first on VISIONARY — purpose-led positioning generates the most compelling commercial narrative and delivers fastest ROI','Recommend beginning with ATTENTIVE improvements since technical fixes are the fastest and most measurable wins'], answer:1 },
 ]
 
 export function shuffle(a) {
@@ -163,26 +192,6 @@ export function fmt(s) {
   return `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`
 }
 
-export function loadUsers() {
-  try { return JSON.parse(localStorage.getItem(USERS_KEY)||'[]') } catch { return [] }
-}
-export function saveUser(name, email) {
-  const users = loadUsers()
-  const idx = users.findIndex(u => u.email.toLowerCase()===email.toLowerCase())
-  const rec = { name, email: email.toLowerCase(), createdAt: new Date().toISOString() }
-  if (idx>=0) users[idx]=rec; else users.push(rec)
-  try { localStorage.setItem(USERS_KEY, JSON.stringify(users)) } catch {}
-}
-export function loadScores() {
-  try { return JSON.parse(localStorage.getItem(SCORES_KEY)||'[]') } catch { return [] }
-}
-export function saveResult(rec) {
-  const existing = loadScores()
-  const updated = [...existing, rec].sort((a,b)=>b.score-a.score).slice(0,100)
-  try { localStorage.setItem(SCORES_KEY, JSON.stringify(updated)) } catch {}
-  return updated
-}
-
 export const MAX_DAILY_ATTEMPTS = 2
 
 export const ALLOWED_EMAILS = [
@@ -203,10 +212,86 @@ export const ALLOWED_EMAILS = [
   'heather.corrie@antennagroup.com',
 ]
 
-export function attemptsToday(email) {
-  const today = new Date().toDateString()
-  return loadScores().filter(s =>
-    s.email.toLowerCase() === email.toLowerCase() &&
-    new Date(s.date).toDateString() === today
-  ).length
+// ── Supabase data functions (all async) ─────────────────────────────
+import { supabase } from './supabase.js'
+
+/** Upsert a registered user by email */
+export async function saveUser(name, email) {
+  const { error } = await supabase
+    .from('accreditation_users')
+    .upsert(
+      { name, email: email.toLowerCase(), updated_at: new Date().toISOString() },
+      { onConflict: 'email' }
+    )
+  if (error) console.error('saveUser error:', error.message)
+}
+
+/** Load all registered users (admin panel) */
+export async function loadUsers() {
+  const { data, error } = await supabase
+    .from('accreditation_users')
+    .select('*')
+    .order('created_at', { ascending: false })
+  if (error) { console.error('loadUsers error:', error.message); return [] }
+  return data || []
+}
+
+/** Save a completed test result */
+export async function saveResult(rec) {
+  const { error } = await supabase
+    .from('accreditation_results')
+    .insert({
+      name:         rec.name,
+      email:        rec.email.toLowerCase(),
+      score:        rec.score,
+      correct:      rec.correct,
+      total:        rec.total,
+      passed:       rec.passed,
+      time_seconds: rec.time,
+      answers:      rec.answers,
+    })
+  if (error) console.error('saveResult error:', error.message)
+}
+
+/** Load all results ordered by score desc (admin panel) */
+export async function loadScores() {
+  const { data, error } = await supabase
+    .from('accreditation_results')
+    .select('*')
+    .order('score', { ascending: false })
+  if (error) { console.error('loadScores error:', error.message); return [] }
+  return (data || []).map(r => ({
+    id:      r.id,
+    name:    r.name,
+    email:   r.email,
+    score:   r.score,
+    correct: r.correct,
+    total:   r.total,
+    passed:  r.passed,
+    time:    r.time_seconds,
+    date:    r.created_at,
+    answers: r.answers,
+  }))
+}
+
+/** Delete a single result by id (admin panel) */
+export async function deleteResult(id) {
+  const { error } = await supabase
+    .from('accreditation_results')
+    .delete()
+    .eq('id', id)
+  if (error) console.error('deleteResult error:', error.message)
+}
+
+/** Count today's attempts for a given email */
+export async function attemptsToday(email) {
+  const startOfDay = new Date()
+  startOfDay.setHours(0, 0, 0, 0)
+  const { count, error } = await supabase
+    .from('accreditation_results')
+    .select('id', { count: 'exact', head: true })
+    .eq('email', email.toLowerCase())
+    .gte('created_at', startOfDay.toISOString())
+  if (error) { console.error('attemptsToday error:', error.message); return 0 }
+  return count || 0
 }
