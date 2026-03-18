@@ -227,6 +227,8 @@ export const ALLOWED_EMAILS = [
   'kirk.dammeier@antennagroup.com',
   'bobbie.maciuch@antennagroup.com',
   'heather.corrie@antennagroup.com',
+  'andrew.mcnamara@antennagroup.com',
+  'yonah.rosen@antennagroup.com',
 ]
 
 // ── Supabase data functions (all async) ─────────────────────────────
