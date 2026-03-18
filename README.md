@@ -2,7 +2,7 @@
 
 A gated accreditation test for Antenna Group team members to become certified Conscious Compass assessors. Pass mark is 80%. Passing issues a Fully Conscious badge and qualifies the assessor to conduct client assessments.
 
-Current version: **v1.1.3**
+Current version: **v1.2.1**
 
 ---
 
@@ -87,11 +87,11 @@ All core settings live in `src/questions.js`:
 |---|---|---|
 | What is a Conscious Brand | 19 | 3 |
 | Identifying Conscious Brands | 24 | 3 |
-| Using the Tool | 14 | 2 |
-| How Scores Are Calculated | 15 | 2 |
+| Using the Tool | 17 | 3 |
+| How Scores Are Calculated | 17 | 3 |
 | Interpreting Scores & Maturity | 13 | 3 |
-| The Assessor's Role | 17 | 3 |
-| Actioning Insights | 13 | 3 |
+| The Assessor's Role | 22 | 3 |
+| Actioning Insights | 17 | 3 |
 
 ---
 
@@ -127,3 +127,5 @@ All core settings live in `src/questions.js`:
 | v1.1.1 | Question corrections: a16 (SENTIENT rescore), i7 (B2B platform context) |
 | v1.1.2 | Question correction: i4 (VISIONARY distractors) |
 | v1.1.3 | Question corrections: a3, a10, c8, a16 — removed all manual adjustment language; strengthened conscious brand definition |
+| v1.2.0 | Added 14 new questions (ASSESSOR +5, TOOL +3, SCORING +2, ACTION +4); all domain minimums raised to 3; total bank 129 questions |
+| v1.2.1 | Replaced a21 — earned media definition question with strategic case for earned media |
