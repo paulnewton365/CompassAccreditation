@@ -239,6 +239,7 @@ export const ALLOWED_EMAILS = [
   'emily.taylor@antennagroup.com',
   'jesse.miller@antennagroup.com',
   'pola.finkelzon@antennagroup.com',
+  'sarah.clark@antennagroup.com',
   'andrew.mcnamara@antennagroup.com',
   'yonah.rosen@antennagroup.com',
 ]
